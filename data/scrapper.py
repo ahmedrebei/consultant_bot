@@ -2,18 +2,21 @@ from bs4 import BeautifulSoup, NavigableString, Comment
 import requests
 import re
 from typing import Optional
+import json
+
 
 
 class Html_parser:
     """
     A class to parse HTML webpages with functionalities.
     """
+
     def __init__(self, url: str) -> None:
         if not re.match(r"https?://(?:www\.)?quebec\.ca", url):
             raise ValueError("Invalid URL. The URL must be from quebec.ca.")
         self.url: str = url
         self.soup: Optional[BeautifulSoup] = None
-        
+
     def fetch_html(self) -> None:
         response = requests.get(self.url)
         if response.status_code == 200:
@@ -22,14 +25,14 @@ class Html_parser:
         else:
             print("status code is", response.status_code)
             raise ValueError("Failed to fetch the HTML content.")
-            
+
     def get_page_title(self) -> str:
         if not self.soup:
             self.fetch_html()
 
         title = self.soup.find("h1")
         return title.get_text(strip=True)
-    
+
     def get_main_div(self) -> str:
         """
         Finds the div with id "main" considering inconsistent header structures.
@@ -95,14 +98,61 @@ class Html_parser:
         for child in main_div.find_all(recursive=False):
             text += self._get_text_recursively(child).strip() + "\n"
         return text
-    
+
+def dump_json_with_encoding(data, filename):
+    with open(filename, 'w', encoding='utf-8') as file:
+        json.dump(data, file, indent=2, ensure_ascii=False)
+
+def create_output_dict(dict_of_links: dict) -> dict:
+    output_dict = {}
+    for category, links in dict_of_links.items():
+        output_dict[category] = {}
+        for subcategory, sublinks in links.items():
+            output_dict[category][subcategory] = []
+            for i, link in enumerate(sublinks):
+                parser = Html_parser(link)
+                parser.fetch_html()
+                main_div = parser.get_main_div()
+                text = parser.get_text_from_web_page(main_div)
+                output_dict[category][subcategory].append(text)
+    return output_dict
+
 def main() -> None:
-    link = "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-regulier-travailleurs-qualifies/declaration-interet"
-    parser = Html_parser(link)
-    parser.fetch_html()
-    main_div = parser.get_main_div()
-    text = parser.get_text_from_web_page(main_div)
-    print(text)
+    dict_of_links = {
+        "immigration": {
+            "PEQ": [
+                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/a-propos",
+                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/conditions-selection",
+                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/presenter-demande",
+                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/apres-certificat-selection",
+            ],
+            "parraiange_epoux": [
+                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/verifier-admissibilite",
+                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/verifier-admissibilite-epoux-conjoint-partenaire-conjugal",
+                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/responsabilites-engagement",
+                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/presenter-demande-engagement-conjoint",
+            ],
+        },
+        "education": {
+            "universities": [
+                "https://www.quebec.ca/en/education/universite/studying/overview",
+                "https://www.quebec.ca/en/education/university/studying/choosing-program",
+                "https://www.quebec.ca/en/education/university/studying/admission",
+                "https://www.quebec.ca/en/education/university/studying/list-universities",
+            ],
+            "cegep": [
+                "https://www.quebec.ca/en/education/cegep/studying/overview",
+                "https://www.quebec.ca/en/education/cegep/studying/costs",
+                "https://www.quebec.ca/en/education/cegep/studying/choosing-program",
+                "https://www.quebec.ca/en/education/cegep/studying/admission",
+                "https://www.quebec.ca/en/education/cegep/studying/list-colleges",
+            ],
+        },
+    }
+    output_dict = create_output_dict(dict_of_links)
+    
+    dump_json_with_encoding(output_dict, "data/output.json")
+    dump_json_with_encoding(dict_of_links, "data/links.json")
 
 if __name__ == "__main__":
     main()
