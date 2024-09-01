@@ -151,7 +151,7 @@ def main() -> None:
     }
     output_dict = create_output_dict(dict_of_links)
     
-    dump_json_with_encoding(output_dict, "data/output.json")
+    dump_json_with_encoding(output_dict, "data/data.json")
     dump_json_with_encoding(dict_of_links, "data/links.json")
 
 if __name__ == "__main__":
