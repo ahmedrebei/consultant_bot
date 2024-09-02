@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+from fastapi import requests
 import streamlit as st
+from workflow import WorkFlow
 
 
 @dataclass
@@ -15,7 +17,7 @@ if MESSAGES not in st.session_state:
     st.session_state[MESSAGES] = [
         Message(
             actor=ASSISTANT,
-            payload="Je suis un assitant pour le gouvernement du Quebec. Je spécialise en immigration et education. Comment puis-je vous aider?",
+            payload="I am a Quebec gouverment assistant. How can I help you today?",
         )
     ]
 
@@ -25,13 +27,19 @@ for msg in st.session_state[MESSAGES]:
 
 
 def main() -> None:
-    prompt: str = st.chat_input("Enter a prompt here")
+    workflow = WorkFlow()
+    
+    query: str = st.chat_input("Write your message here")
 
-    if prompt:
-        st.session_state[MESSAGES].append(Message(actor=USER, payload=prompt))
-        st.chat_message(USER).write(prompt)
-        response: str = f"{prompt}"
+    if query:
+        st.session_state[MESSAGES].append(Message(actor=USER, payload=query))
+        st.chat_message(USER).write(query)
+        
+        response = workflow.run(query=query)
+        
         st.session_state[MESSAGES].append(Message(actor=ASSISTANT, payload=response))
+        
+        
         st.chat_message(ASSISTANT).write(response)
 
 

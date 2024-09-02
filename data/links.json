@@ -1,16 +1,16 @@
 {
   "immigration": {
     "PEQ": [
-      "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/a-propos",
-      "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/conditions-selection",
-      "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/presenter-demande",
-      "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/apres-certificat-selection"
+      "https://www.quebec.ca/en/immigration/permanent/skilled-workers/quebec-experience-program/about",
+      "https://www.quebec.ca/en/immigration/permanent/skilled-workers/quebec-experience-program/selection-conditions",
+      "https://www.quebec.ca/en/immigration/permanent/skilled-workers/quebec-experience-program/applying",
+      "https://www.quebec.ca/en/immigration/permanent/skilled-workers/quebec-experience-program/after-selection-certificate"
     ],
     "parraiange_epoux": [
-      "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/verifier-admissibilite",
-      "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/verifier-admissibilite-epoux-conjoint-partenaire-conjugal",
-      "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/responsabilites-engagement",
-      "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/presenter-demande-engagement-conjoint"
+      "https://www.quebec.ca/en/immigration/permanent/sponsor-family-member/sponsoring-spouse-conjugal-partner/verifying-your-eligibility",
+      "https://www.quebec.ca/en/immigration/permanent/sponsor-family-member/sponsoring-spouse-conjugal-partner/verifying-eligibility-spouse-conjugal-partner",
+      "https://www.quebec.ca/en/immigration/permanent/sponsor-family-member/sponsoring-spouse-conjugal-partner/responsibilities-undertaking",
+      "https://www.quebec.ca/en/immigration/permanent/sponsor-family-member/sponsoring-spouse-conjugal-partner/submitting-undertaking-application"
     ]
   },
   "education": {

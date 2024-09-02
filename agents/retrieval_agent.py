@@ -1,6 +1,8 @@
 import json
+from typing import List
 from loguru import logger
 from agents.agent import Agent
+from agents.grading_agent import GradingAgent
 from config import OPENAI_API_KEY
 
 from langchain_community.embeddings import OpenAIEmbeddings
@@ -15,14 +17,8 @@ class RetrievalAgent(Agent):
             if self.expertise not in ["education", "immigration"]:
                 raise ValueError("Invalid expertise. Allowed values are 'education' or 'immigration'.")
             self.vectorstore = self.get_vectorstore(expertise=self.expertise)
-            # self.chain = self.create_chain(
-            #     {
-            #         "input_variables": ["user_input"],
-            #         "template": """
-            #         The user said: {user_input}
-            #         """,
-            #     }
-            # )
+            
+            self.grader = GradingAgent(expertise=self.expertise)
 
         except Exception as e:
             logger.error(f"Error initializing RetrievalAgent: {e}")
@@ -48,9 +44,26 @@ class RetrievalAgent(Agent):
         except Exception as e:
             logger.error(f"Error in RetrievalAgent search: {e}")
             raise
-    # def process_input(self, user_input: str):
-    #     try:
-    #         return self.run(self.chain, user_input=user_input)
-    #     except Exception as e:
-    #         logger.error(f"Error in RetrievalAgent process_input: {e}")
-    #         raise
+    
+    def grade(self, query: str, documents: List[str]):
+        try:
+            return [self.grader.grade(query=query, retrieved_data=document) for document in documents]
+        except Exception as e:
+            logger.error(f"Error in RetrievalAgent grade: {e}")
+            raise
+        
+        
+    def execute(self, query: str, top_k: int = 5):
+        try:
+            filtered_documents = []
+            search_results = self.search(query=query, top_k=top_k)
+            graded_results = self.grade(query=query, documents=search_results)
+            
+            for result, grade in zip(search_results, graded_results):
+                if grade == "true":
+                    filtered_documents.append(result)
+            return filtered_documents
+                
+        except Exception as e:
+            logger.error(f"Error in RetrievalAgent execute: {e}")
+            raise

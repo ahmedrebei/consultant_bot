@@ -8,12 +8,13 @@ class GreetingAgent(Agent):
             super().__init__()
             self.chain = self.create_chain(
                 {
-                    "input_variables": ["user_input"],
+                    "input_variables": ["query", "conversation_history"],
                     "template": """
-                    The user said: {user_input}
                     
-                    At the end of the loop, you output an Answer.
-                    check if the input is related to any region in the province of Quebec.
+                    The user said: {query}
+                    The conversation history is: {conversation_history}
+                    
+                    check if the user input and the conversation history is related to any region in the province of Quebec.
                     If it is not related to Quebec, return "not related".
                     If it is realated to Quebec, then classify it as "immigration", "education", or "other".
                     
@@ -37,9 +38,9 @@ class GreetingAgent(Agent):
             logger.error(f"Error initializing GreetingAgent: {e}")
             raise
 
-    def greet(self, user_input: str):
+    def greet(self, query: str, conversation_history: str) -> str:
         try:
-            return self.run(self.chain, user_input=user_input)
+            return self.run(self.chain, query=query, conversation_history=conversation_history)
         except Exception as e:
             logger.error(f"Error in GreetingAgent greet: {e}")
             raise

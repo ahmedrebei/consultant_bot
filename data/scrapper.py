@@ -118,41 +118,13 @@ def create_output_dict(dict_of_links: dict) -> dict:
     return output_dict
 
 def main() -> None:
-    dict_of_links = {
-        "immigration": {
-            "PEQ": [
-                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/a-propos",
-                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/conditions-selection",
-                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/presenter-demande",
-                "https://www.quebec.ca/immigration/permanente/travailleurs-qualifies/programme-experience-quebecoise/apres-certificat-selection",
-            ],
-            "parraiange_epoux": [
-                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/verifier-admissibilite",
-                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/verifier-admissibilite-epoux-conjoint-partenaire-conjugal",
-                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/responsabilites-engagement",
-                "https://www.quebec.ca/immigration/permanente/parrainer-membre-famille/parrainer-partenaire-conjugal/presenter-demande-engagement-conjoint",
-            ],
-        },
-        "education": {
-            "universities": [
-                "https://www.quebec.ca/en/education/universite/studying/overview",
-                "https://www.quebec.ca/en/education/university/studying/choosing-program",
-                "https://www.quebec.ca/en/education/university/studying/admission",
-                "https://www.quebec.ca/en/education/university/studying/list-universities",
-            ],
-            "cegep": [
-                "https://www.quebec.ca/en/education/cegep/studying/overview",
-                "https://www.quebec.ca/en/education/cegep/studying/costs",
-                "https://www.quebec.ca/en/education/cegep/studying/choosing-program",
-                "https://www.quebec.ca/en/education/cegep/studying/admission",
-                "https://www.quebec.ca/en/education/cegep/studying/list-colleges",
-            ],
-        },
-    }
+    
+    with open("data/links.json") as file:
+        dict_of_links = json.load(file)
+    
     output_dict = create_output_dict(dict_of_links)
     
     dump_json_with_encoding(output_dict, "data/data.json")
-    dump_json_with_encoding(dict_of_links, "data/links.json")
 
 if __name__ == "__main__":
     main()
