@@ -1,24 +1,27 @@
-# Use the official Python image as the base image
-FROM python:3.12
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the poetry.lock and pyproject.toml files to the container
-COPY poetry.lock pyproject.toml /app/
-
-# Install Poetry
-RUN pip install poetry
-
-# Install project dependencies using Poetry
-RUN poetry config virtualenvs.create false && \
-    poetry install --no-interaction --no-ansi
-
-# Copy the rest of the application code to the container
+# Copy the current directory contents into the container at /app
 COPY . /app
 
-# Expose the port that Streamlit runs on
+# Install virtualenv
+RUN pip install --no-cache-dir virtualenv
+
+# Create a virtual environment
+RUN virtualenv /app/.venv
+
+# Install dependencies in the virtual environment
+RUN /app/.venv/bin/pip install --no-cache-dir -r requirements.txt
+
+# Set the Streamlit command
+ENV VIRTUAL_ENV=/app/.venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Make port 8501 available to the world outside this container
 EXPOSE 8501
 
-# Set the command to run Streamlit
+# Run the Streamlit app
 CMD ["streamlit", "run", "run.py"]
