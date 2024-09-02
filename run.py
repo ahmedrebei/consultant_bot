@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from fastapi import requests
 import streamlit as st
 from workflow import WorkFlow
 
