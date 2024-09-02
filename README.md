@@ -27,6 +27,7 @@ consultant_bot
 │   ├── data.json
 │   ├── links.json
 │   └── scrapper.py
+├── Dockerfile
 ├── pyproject.toml
 ├── run.py
 └── workflow.py
@@ -45,14 +46,14 @@ consultant_bot
     - **retrieval_agent.py**: RAG agent class.
 
 - **config.py**: Get API_KEY from `.env` file.
-- **data**: contains data related files:
-    - **chroma_data**: directory when Chroma stores the vector store.
-    - **chroma_store.py**: vector store class.
+- **data**: Contains data related files:
+    - **chroma_data**: Directory when Chroma stores the vector store.
+    - **chroma_store.py**: Vector store class.
     - **scrapper.py**: scrapping class to scrap input links from `links.json` and store the ouput in `data.json`
-    - **data.json**: data.
-    - **links.json**: links to scrap.
-- **pyproject.toml**: A configuration file for the Poetry package manager.
-- **workflow.py**: the workflow class of the chatbot.
+    - **data.json**: Data.
+    - **links.json**: Links to scrap.
+- **pyproject.toml**: A configuration file for Poetry package manager.
+- **workflow.py**: The workflow class of the chatbot.
 - **run.py**: The main entry point for running the streamlit application.
 
 
@@ -65,12 +66,7 @@ consultant_bot
    cd consultant_bot
    ```
 
-2. **Install dependencies**:
-    ```bash
-    poetry install
-    ```
-
-3. **Set up environment variables**:
+2. **Set up environment variables**:
    Create a `.env` file in the root directory with the following content:
    ```env
    OPENAI_API_KEY=...
@@ -80,7 +76,7 @@ consultant_bot
 
 1. **Build the Docker Image**:
    ```bash
-   docker build -t chatbot_project .
+   docker build -t consultant_bot .
    ```
 
 2. **Run the Docker Container**:
