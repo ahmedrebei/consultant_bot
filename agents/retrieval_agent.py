@@ -28,12 +28,16 @@ class RetrievalAgent(Agent):
         embedding = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
         chroma_store = ChromaStore(
             collection_name=expertise,
-            persist_directory="data/chroma_data",
+            persist_directory=f"data/chroma_data/{expertise}",
             embedding_function=embedding,
         )
+
+        print("chroma store length: ", chroma_store.vectorstore._collection.count())
+        if chroma_store.vectorstore._collection.count():
+            return chroma_store
+        
         with open("data/data.json", "r") as file:
             data_dict = json.load(file)
-
         chroma_store.add_text_vector_store(data_dict)
         return chroma_store
         
