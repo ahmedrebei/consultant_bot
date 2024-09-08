@@ -32,7 +32,6 @@ class RetrievalAgent(Agent):
             embedding_function=embedding,
         )
 
-        print("chroma store length: ", chroma_store.vectorstore._collection.count())
         if chroma_store.vectorstore._collection.count():
             return chroma_store
         
@@ -65,6 +64,7 @@ class RetrievalAgent(Agent):
             
             for result, grade in zip(search_results, graded_results):
                 if grade == "true":
+                    
                     filtered_documents.append(result)
             return filtered_documents
                 
