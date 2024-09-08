@@ -13,24 +13,26 @@ The Multi-Agent Chatbot project leverages multiple agents, including the Retriev
 
 ```
 consultant_bot
-├── README.md
 ├── agents
 │   ├── agent.py
 │   ├── generator_agent.py
 │   ├── grading_agent.py
 │   ├── greeting_agent.py
-│   └── retrieval_agent.py
-├── config.py
+│   ├── retrieval_agent.py
+│   └── summarization_agent.py
 ├── data
 │   ├── chroma_data
 │   ├── chroma_store.py
 │   ├── data.json
 │   ├── links.json
 │   └── scrapper.py
+├── config.py
 ├── Dockerfile
-├── pyproject.toml
+├── README.md
+├── requirements.txt
 ├── run.py
 └── workflow.py
+
 ```
 
 ### Files Description
@@ -44,6 +46,7 @@ consultant_bot
     - **grading_agent.py**: Grading agent class.
     - **greeting_agent.py**: Greeting agent class.
     - **retrieval_agent.py**: RAG agent class.
+    - **summarization_agent.py**: Summarization agent class.
 
 - **config.py**: Get API_KEY from `.env` file.
 - **data**: Contains data related files:
@@ -52,7 +55,7 @@ consultant_bot
     - **scrapper.py**: scrapping class to scrap input links from `links.json` and store the ouput in `data.json`
     - **data.json**: Data.
     - **links.json**: Links to scrap.
-- **pyproject.toml**: A configuration file for Poetry package manager.
+- **requirements.txt**: List of all the dependencies.
 - **workflow.py**: The workflow class of the chatbot.
 - **run.py**: The main entry point for running the streamlit application.
 
