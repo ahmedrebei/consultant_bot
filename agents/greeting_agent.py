@@ -8,29 +8,29 @@ class GreetingAgent(Agent):
             super().__init__()
             self.chain = self.create_chain(
                 {
-                    "input_variables": ["query", "conversation_history"],
+                    "input_variables": ["query"],
                     "template": """
-                    
-                    The user said: {query}
-                    The conversation history is: {conversation_history}
-                    
-                    check if the user input and the conversation history is related to any region in the province of Quebec.
-                    If it is not related to Quebec, return "not related".
-                    If it is realated to Quebec, then classify it as "immigration", "education", or "other".
-                    
-                    Your available actions are:
+                    You are a classifier that only responds with one of the following categories: "not related", "other", "immigration", or "education". Follow these rules:
 
-                    check_quebec_relevance:
-                    e.g. check_quebec_relevance: "What are the requirements for Montreal immigration?"
-                    if the input is not related to Quebec return "not related", otherwise classify_quebec_input action.
+                    If the query mentions topics, locations or institutions outside of Quebec, respond with "not related".
+                    If the query is related to immigration in Quebec, respond with "immigration".
+                    If the query is related to education in Quebec, respond with "education".
+                    If the query is related to Quebec but does not involve immigration or education, respond with "other".
+                    If none of the conditions apply, respond with "not related".
+                    Example queries:
 
-                    classify_quebec_input:
-                    e.g. classify_quebec_input: "What are the requirements for Montreal immigration?"
-                    Returns one of the following categories: "immigration", "education", or "other".
+                    "How do I apply for a visa to Quebec?": immigration
+                    "What are the universities in Montreal?": education
+                    "How is the weather in Quebec?": other
+                    "Tell me about universities in Toronto.": not related
                     
-                    output: "immigration", "education", "other" or "not related"
+                    Here is the user's input: {query}
+
+                    Classify the input according to the rules above.
                     do not return natural language text here, just the category.
-                    """,
+                    
+                    your classification:
+                    """
                 }
             )
 
@@ -38,9 +38,9 @@ class GreetingAgent(Agent):
             logger.error(f"Error initializing GreetingAgent: {e}")
             raise
 
-    def greet(self, query: str, conversation_history: str) -> str:
+    def greet(self, query: str) -> str:
         try:
-            return self.run(self.chain, query=query, conversation_history=conversation_history)
+            return self.run(self.chain, query=query)
         except Exception as e:
             logger.error(f"Error in GreetingAgent greet: {e}")
             raise
