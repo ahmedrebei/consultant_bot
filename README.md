@@ -49,16 +49,17 @@ consultant_bot
     - **summarization_agent.py**: Summarization agent class.
 
 - **config.py**: Get API_KEY from `.env` file.
-- **data**: Contains data related files:
+- **data**: Contains data-related files:
     - **chroma_data**: Directory when Chroma stores the vector store.
     - **chroma_store.py**: Vector store class.
-    - **scrapper.py**: scrapping class to scrap input links from `links.json` and store the ouput in `data.json`
+    - **scrapper.py**: scrapping class to scrap input links from `links.json` and store the output in `data.json`
     - **data.json**: Data.
     - **links.json**: Links to scrap.
 - **requirements.txt**: List of all the dependencies.
 - **workflow.py**: The workflow class of the chatbot.
 - **run.py**: The main entry point for running the streamlit application.
 
+![chatbot](https://github.com/user-attachments/assets/79d9d064-29a9-4aca-939c-41dea694fc83)
 
 
 ## Installation
